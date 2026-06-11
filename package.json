@@ -1,0 +1,9 @@
+{
+  "name": "ct-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Eoin & Cristina — Together dashboard",
+  "dependencies": {
+    "mongodb": "^6.10.0"
+  }
+}

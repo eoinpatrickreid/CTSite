@@ -1,0 +1,2048 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   ROOMS — immersive atmospheric styles for each tab
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Room transition overlay ─────────────────────────────────────────────── */
+.room-transition {
+  position: fixed; inset: 0; z-index: 9999;
+  background: #0a0806;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+.room-transition.active { opacity: 1; pointer-events: all; }
+
+/* ── Room atmosphere layer ───────────────────────────────────────────────── */
+.room-atmosphere {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.8s ease;
+  overflow: hidden;
+}
+
+/* ── Shared decorative element styles ────────────────────────────────────── */
+.room-deco {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* Shared keyframes used across rooms */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.5; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+@keyframes lamp-pulse {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+@keyframes float-mote {
+  0% { transform: translate(0, 0) scale(1); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% { transform: translate(var(--dx, 80px), var(--dy, -200px)) scale(0.3); opacity: 0; }
+}
+
+/* Dust motes — used in multiple rooms */
+.dust-mote {
+  position: absolute;
+  width: var(--s, 3px); height: var(--s, 3px);
+  border-radius: 50%;
+  background: rgba(255,220,170,0.25);
+  animation: float-mote var(--d, 12s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   BEDROOM (Home)
+   Light, warm, realistic bedroom. Every UI element is a physical object.
+   Cream walls, real cork, bright Post-its, paper calendar, parchment map.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── The Wall — warm cream/beige, real painted wall ─── */
+.room-bedroom .room-atmosphere {
+  background: #e8ddd0;
+}
+.br-wall {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 25% 35%, rgba(255,240,210,0.4) 0%, transparent 70%),
+    linear-gradient(175deg, #efe4d6 0%, #e8ddd0 30%, #e0d4c4 100%);
+}
+.br-wall::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='4' seed='2'/><feColorMatrix values='0 0 0 0 0.78 0 0 0 0 0.72 0 0 0 0 0.64 0 0 0 0.05 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+/* Subtle shadow from ceiling */
+.br-wall::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 120px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.06) 0%, transparent 100%);
+}
+
+/* Baseboard — real wood trim */
+.br-baseboard {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 45px;
+  background: linear-gradient(180deg, #c4a882, #a8906c, #96805a);
+  border-top: 3px solid #d4b890;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
+}
+
+/* ── Decorative objects ─── */
+.br-shelf {
+  position: absolute;
+  top: 4%; right: 3%;
+  width: 220px; height: 95px;
+}
+.br-shelf-board {
+  position: absolute;
+  bottom: 0; left: -10px; right: -10px;
+  height: 10px;
+  background: linear-gradient(180deg, #c4a882, #a08060);
+  border-radius: 2px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+.br-frame {
+  position: absolute; bottom: 12px;
+  border: 3px solid #a08060;
+  border-radius: 1px;
+  box-shadow: 2px 3px 8px rgba(0,0,0,0.15);
+  background: #f5f0e8;
+  padding: 3px;
+}
+.br-frame-inner { overflow: hidden; border-radius: 1px; }
+.br-frame-art { display: block; width: 100%; height: 100%; }
+.br-frame-1 { left: 8px; width: 65px; height: 48px; transform: rotate(-1.5deg); }
+.br-frame-2 { left: 85px; width: 48px; height: 58px; transform: rotate(0.8deg); }
+.br-frame-3 { left: 148px; width: 55px; height: 55px; transform: rotate(-0.5deg); }
+
+.br-painting {
+  position: absolute;
+  top: 3%; left: 3%;
+  transform: rotate(-1deg);
+}
+.br-painting-frame {
+  width: 165px; height: 110px;
+  border: 6px solid #a08060;
+  border-radius: 1px;
+  box-shadow: 3px 4px 12px rgba(0,0,0,0.18);
+  overflow: hidden;
+  background: #f5f0e8;
+}
+.br-painting-art { display: block; width: 100%; height: 100%; }
+
+.br-lamp {
+  position: absolute;
+  top: 5%; right: 28%;
+  width: 55px; height: 72px;
+}
+.br-lamp-shade {
+  width: 38px; height: 22px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, #f5e8c8, #e8d5a8);
+  border-radius: 50% 50% 0 0;
+  border: 1.5px solid rgba(180,160,120,0.4);
+}
+.br-lamp-arm {
+  width: 3px; height: 28px;
+  margin: 0 auto;
+  background: linear-gradient(90deg, #b8a080, #d4b890, #b8a080);
+}
+.br-lamp-base {
+  width: 26px; height: 6px;
+  margin: 0 auto;
+  background: linear-gradient(90deg, #a08060, #c4a882, #a08060);
+  border-radius: 3px;
+}
+.br-lamp-glow {
+  position: absolute;
+  top: -50px; left: -70px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,230,160,0.2) 0%, rgba(255,220,130,0.06) 40%, transparent 65%);
+  animation: lamp-pulse 4s ease-in-out infinite;
+}
+
+/* Vinyl */
+.br-vinyl {
+  position: absolute;
+  bottom: 55px; left: 3%;
+}
+.br-vinyl-body {
+  width: 105px; height: 86px;
+  background: linear-gradient(160deg, #c4a882, #a8906c);
+  border-radius: 5px;
+  border: 1.5px solid rgba(180,150,110,0.5);
+  padding: 8px;
+  box-shadow: 3px 4px 12px rgba(0,0,0,0.15);
+  position: relative;
+}
+.br-vinyl-platter {
+  width: 66px; height: 66px;
+  border-radius: 50%;
+  background: #2a2420;
+  position: relative;
+  display: grid; place-items: center;
+}
+.br-vinyl-record {
+  width: 58px; height: 58px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #1a1410 30%, #0f0c08 31%, #1e1a14 32%, #0f0c08 60%, #1e1a14 61%, #0f0c08 90%);
+  animation: vinyl-spin 3s linear infinite;
+  display: grid; place-items: center;
+}
+.br-vinyl-label {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #D4A5F9, #FFB3D9);
+  display: grid; place-items: center;
+  font-size: 5px; font-weight: 700;
+  color: #2E1F2A;
+  font-family: var(--font-display);
+}
+.br-vinyl-groove {
+  position: absolute; border-radius: 50%;
+  border: 0.5px solid rgba(255,255,255,0.06);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+}
+.br-vg-1 { width: 34px; height: 34px; }
+.br-vg-2 { width: 44px; height: 44px; }
+.br-vg-3 { width: 54px; height: 54px; }
+.br-vinyl-arm {
+  position: absolute; top: 6px; right: 8px;
+  transform-origin: top right; transform: rotate(-22deg);
+}
+.br-vinyl-arm-bar { width: 2px; height: 40px; background: linear-gradient(90deg, #b8a080, #d4b890, #b8a080); margin-left: auto; }
+.br-vinyl-arm-head { width: 6px; height: 4px; background: #a08060; border-radius: 0 0 2px 2px; margin-left: auto; margin-right: -2px; }
+@keyframes vinyl-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* String lights */
+.br-string-lights {
+  position: absolute; top: 0; left: 0; right: 0; height: 50px;
+}
+.br-string-svg {
+  position: absolute; top: 0; left: 0; width: 100%; height: 50px;
+}
+.br-bulb {
+  position: absolute;
+  width: 7px; height: 9px;
+  border-radius: 0 0 50% 50%;
+  background: rgba(255,230,160,0.95);
+  box-shadow: 0 0 8px 3px rgba(255,210,100,0.25), 0 0 18px 6px rgba(255,190,60,0.08);
+  animation: twinkle var(--d, 3s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   BEDROOM — UI ELEMENTS AS PHYSICAL OBJECTS (light mode)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Kill default textures in bedroom */
+.room-bedroom ~ .paper-grain,
+.room-bedroom .paper-grain,
+.room-bedroom ~ .halftone-layer,
+.room-bedroom .halftone-layer { opacity: 0 !important; }
+
+/* ── Header = wooden shelf with name carved in ─── */
+.room-bedroom .app-header {
+  background: linear-gradient(180deg, #d4c0a4, #c4ad90) !important;
+  border-color: #b8a080 !important;
+  border-bottom: 3px solid #a89070 !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+}
+.room-bedroom .names {
+  color: #4a3828 !important;
+  text-shadow: 0 1px 0 rgba(255,240,210,0.5);
+}
+.room-bedroom .names em { color: #8a5a3a !important; }
+.room-bedroom .brand .amp { color: #a08060 !important; }
+.room-bedroom .brand .sub { color: #8a7a68 !important; }
+
+/* ── Tab nav = notebook tabs ─── */
+.room-bedroom .tab-nav {
+  border-color: #c4ad90 !important;
+  background: #efe6d4 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 2px 6px rgba(0,0,0,0.08) !important;
+  gap: 3px !important;
+}
+.room-bedroom .tab-btn {
+  color: #8a7a68 !important;
+  border: 1px solid transparent !important;
+  border-radius: 6px 6px 0 0 !important;
+  background: rgba(255,248,235,0.3) !important;
+  font-size: 12.5px !important;
+  padding: 5px 14px !important;
+}
+.room-bedroom .tab-btn.active {
+  color: #4a3828 !important;
+  background: #f5efe4 !important;
+  border-color: #c4ad90 #c4ad90 transparent !important;
+  font-weight: 600 !important;
+}
+.room-bedroom .tab-btn:hover:not(.active) {
+  color: #6a5a48 !important;
+  background: rgba(255,248,235,0.5) !important;
+}
+.room-bedroom .tab-dot { opacity: 0.7; }
+
+/* ── Coming Up = lined notepad strip ─── */
+.room-bedroom .coming-up {
+  background: #fdf8ed !important;
+  border: 1px solid #d8c8a8 !important;
+  border-radius: 2px !important;
+  box-shadow: 2px 3px 6px rgba(0,0,0,0.06) !important;
+  background-image: repeating-linear-gradient(
+    0deg, transparent, transparent 23px, rgba(100,140,200,0.12) 23px, rgba(100,140,200,0.12) 24px
+  ) !important;
+}
+.room-bedroom .cu-label { color: #8a7a68 !important; }
+.room-bedroom .cu-chip {
+  background: rgba(255,240,210,0.5) !important;
+  border-color: #d8c8a8 !important;
+  border-radius: 2px !important;
+  color: #5a4a38 !important;
+}
+.room-bedroom .cu-title { color: #4a3828 !important; }
+.room-bedroom .cu-when { color: #a09080 !important; }
+
+/* ── CALENDAR = paper wall calendar, pinned ─── */
+.room-bedroom main > .card:first-child {
+  background: #fdf8ed !important;
+  border: 1px solid #d0c4a8 !important;
+  border-radius: 3px !important;
+  box-shadow:
+    3px 4px 0 rgba(160,140,110,0.15),
+    6px 8px 18px rgba(0,0,0,0.08) !important;
+  transform: rotate(-0.3deg);
+  position: relative;
+}
+/* Red pushpin */
+.room-bedroom main > .card:first-child::before {
+  content: '' !important;
+  position: absolute !important;
+  top: -7px; left: 50%;
+  width: 14px; height: 14px;
+  margin-left: -7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #e85050, #c03030);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25), inset 0 1px 2px rgba(255,255,255,0.3);
+  z-index: 5;
+}
+.room-bedroom .month-cell {
+  background: #faf5e8 !important;
+  border: 0.5px solid #e0d4c0 !important;
+  border-radius: 1px !important;
+}
+.room-bedroom .month-cell.today {
+  background: #fff0d0 !important;
+  border-color: #d4a060 !important;
+  box-shadow: inset 0 0 6px rgba(200,150,60,0.12) !important;
+}
+.room-bedroom .month-cell.today .date-num em { color: #c07830 !important; }
+.room-bedroom .month-cell.selected {
+  background: #fff5e0 !important;
+  border-color: #c4a060 !important;
+}
+.room-bedroom .month-cell:hover { background: #faf0dc !important; }
+.room-bedroom .month-dow { color: #a09080 !important; }
+.room-bedroom .cal-toolbar .month-label { color: #4a3828 !important; }
+.room-bedroom .month-cell .date-num { color: #6a5a48 !important; }
+.room-bedroom .month-cell .date-num span { color: #6a5a48 !important; }
+.room-bedroom .view-toggle button { color: #a09080 !important; border-color: #d0c4a8 !important; background: #fdf8ed !important; }
+.room-bedroom .view-toggle button.active { color: #4a3828 !important; background: #f0e4c8 !important; }
+.room-bedroom .icon-btn { color: #8a7a68 !important; border-color: #d0c4a8 !important; background: #fdf8ed !important; }
+.room-bedroom .icon-btn:hover { background: #f5ead4 !important; }
+
+/* Day detail */
+.room-bedroom .day-detail { border-color: #d8c8a8 !important; }
+.room-bedroom .dd-date { color: #8a5a3a !important; }
+.room-bedroom .dd-item { background: #faf5e8 !important; border-color: #e0d4c0 !important; }
+.room-bedroom .dd-item:hover { background: #f5ead4 !important; }
+.room-bedroom .dd-title { color: #4a3828 !important; }
+.room-bedroom .dd-sub { color: #a09080 !important; }
+.room-bedroom .dd-time { color: #a09080 !important; }
+
+/* ── MAP = parchment map tacked to wall ─── */
+.room-bedroom .map-card {
+  background: #f0e8d4 !important;
+  border: 2px solid #c4ad90 !important;
+  border-radius: 2px !important;
+  box-shadow:
+    3px 4px 0 rgba(160,140,110,0.15),
+    5px 7px 14px rgba(0,0,0,0.08) !important;
+  transform: rotate(0.3deg);
+  overflow: visible !important;
+}
+/* Blue tack pins */
+.room-bedroom .map-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: -6px; left: 15px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #5090d0, #3070b0);
+  box-shadow: 0 2px 3px rgba(0,0,0,0.2), inset 0 1px 2px rgba(255,255,255,0.3);
+  z-index: 5;
+}
+.room-bedroom .map-card::after {
+  content: '' !important;
+  position: absolute !important;
+  top: -6px; right: 15px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #5090d0, #3070b0);
+  box-shadow: 0 2px 3px rgba(0,0,0,0.2), inset 0 1px 2px rgba(255,255,255,0.3);
+  z-index: 5;
+}
+.room-bedroom .map-card .card-h h2 { color: #4a3828 !important; }
+.room-bedroom .map-card .eyebrow { color: #a09080 !important; }
+.room-bedroom .map-legend .ml-item { color: #8a7a68 !important; }
+
+/* Map filter */
+.room-bedroom .mft-btn { background: #fdf8ed !important; color: #8a7a68 !important; border-color: #d0c4a8 !important; }
+.room-bedroom .mft-btn.active { background: #8a5a3a !important; color: white !important; }
+
+/* ── WIDGETS COLUMN = cork board ─── */
+.room-bedroom .widgets-col {
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><filter id='c'><feTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='4' seed='7'/><feColorMatrix values='0 0 0 0 0.72 0 0 0 0 0.58 0 0 0 0 0.38 0 0 0 0.2 0'/></filter><rect width='100%25' height='100%25' filter='url(%23c)'/></svg>"),
+    linear-gradient(175deg, #c4a070, #b89060, #a88050) !important;
+  border: 7px solid #8a6a40 !important;
+  border-radius: 3px !important;
+  padding: 20px !important;
+  box-shadow:
+    inset 0 0 25px rgba(0,0,0,0.12),
+    inset 0 0 4px rgba(255,220,160,0.1),
+    4px 6px 18px rgba(0,0,0,0.12) !important;
+  position: relative;
+}
+/* Wooden frame bevel */
+.room-bedroom .widgets-col::before {
+  content: '';
+  position: absolute;
+  inset: -7px;
+  border: 7px solid;
+  border-image: linear-gradient(180deg, #a88850, #7a5a30, #6a4a25) 1;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Sticky notes ─── */
+.room-bedroom .widgets-col > .card {
+  border-radius: 1px !important;
+  border: none !important;
+  box-shadow:
+    2px 3px 6px rgba(0,0,0,0.1) !important;
+  position: relative;
+  padding: 14px 16px !important;
+}
+.room-bedroom .widgets-col > .card::before { display: none !important; }
+
+/* Real Post-it colors — bright, papery */
+.room-bedroom .widgets-col > .card:nth-child(1) {
+  background: #fff9c4 !important;
+  transform: rotate(-0.6deg);
+  color: #5a4a20 !important;
+}
+.room-bedroom .widgets-col > .card:nth-child(2) {
+  background: #ffe0ec !important;
+  transform: rotate(0.4deg);
+  color: #5a2a3a !important;
+}
+.room-bedroom .widgets-col > .card:nth-child(3) {
+  background: #d4f5d8 !important;
+  transform: rotate(-0.3deg);
+  color: #2a4a2e !important;
+}
+.room-bedroom .widgets-col > .card:nth-child(4) {
+  background: #e8d8f8 !important;
+  transform: rotate(0.5deg);
+  color: #3a2a4a !important;
+}
+.room-bedroom .widgets-col > .card:nth-child(5) {
+  background: #d4eaf8 !important;
+  transform: rotate(-0.2deg);
+  color: #2a3a4a !important;
+}
+.room-bedroom .widgets-col > .card:nth-child(6) {
+  background: #ffe8c8 !important;
+  transform: rotate(0.3deg);
+  color: #4a3a20 !important;
+}
+
+/* Pushpins */
+.room-bedroom .widgets-col > .card::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.3);
+  z-index: 3;
+}
+.room-bedroom .widgets-col > .card:nth-child(1)::after { right: 18px; background: radial-gradient(circle at 40% 35%, #e85050, #c03030); }
+.room-bedroom .widgets-col > .card:nth-child(2)::after { left: 20px; background: radial-gradient(circle at 40% 35%, #5090d0, #3070b0); }
+.room-bedroom .widgets-col > .card:nth-child(3)::after { right: 22px; background: radial-gradient(circle at 40% 35%, #50b860, #308830); }
+.room-bedroom .widgets-col > .card:nth-child(4)::after { left: 18px; background: radial-gradient(circle at 40% 35%, #e8a030, #c08020); }
+.room-bedroom .widgets-col > .card:nth-child(5)::after { right: 16px; background: radial-gradient(circle at 40% 35%, #e85050, #c03030); }
+.room-bedroom .widgets-col > .card:nth-child(6)::after { left: 22px; background: radial-gradient(circle at 40% 35%, #5090d0, #3070b0); }
+
+/* Sticky note text — dark on bright paper */
+.room-bedroom .widgets-col .card-h h2 { color: inherit !important; font-size: 22px !important; }
+.room-bedroom .widgets-col .card-h h2 em { color: inherit !important; opacity: 0.7; }
+.room-bedroom .widgets-col .eyebrow { color: inherit !important; opacity: 0.45; }
+.room-bedroom .widgets-col .wi-title { color: inherit !important; }
+.room-bedroom .widgets-col .wi-sub { color: inherit !important; opacity: 0.5; }
+.room-bedroom .widgets-col .pill { background: rgba(0,0,0,0.06) !important; border-color: rgba(0,0,0,0.08) !important; color: inherit !important; opacity: 0.65; }
+.room-bedroom .widgets-col .mini-btn { color: inherit !important; opacity: 0.5; }
+.room-bedroom .widgets-col .swatch { border-radius: 3px !important; }
+.room-bedroom .widget-item { border-color: rgba(0,0,0,0.06) !important; }
+.room-bedroom .widget-item:hover { background: rgba(0,0,0,0.03) !important; }
+.room-bedroom .widget-view-all { color: inherit !important; opacity: 0.5; border-color: rgba(0,0,0,0.08) !important; }
+.room-bedroom .widget-view-all:hover { opacity: 0.8; }
+.room-bedroom .collapse-chevron { color: inherit !important; opacity: 0.35; }
+.room-bedroom .heart-on { color: #e85050 !important; opacity: 1 !important; }
+
+/* ── MAP = warm parchment, not cold grey ─── */
+.room-bedroom .leaflet-container { background: #efe2c4 !important; }
+.room-bedroom .map-container .leaflet-tile-pane {
+  /* Voyager tiles already look beautiful — just a tiny warm tweak */
+  filter: saturate(0.92) brightness(1.02);
+}
+.room-bedroom .map-card .leaflet-control-zoom a {
+  background: #f3ead2 !important;
+  color: #6a5436 !important;
+  border-color: #cdb98c !important;
+}
+.room-bedroom .map-card .leaflet-control-zoom a:hover { background: #e9dcbb !important; }
+
+/* ── AGENDA + TURN sticky notes: handwritten, not form-UI ─── */
+/* let the pushpin escape the note edge */
+.room-bedroom .widgets-col > .agenda-card { overflow: visible !important; }
+.room-bedroom .agenda-card::after { display: none !important; } /* drop the dotted-corner; pushpin handled by sticky rule */
+
+/* re-assert the corner pushpin for agenda (sticky rule is otherwise overridden by .agenda-card) */
+.room-bedroom .widgets-col > .agenda-card::before {
+  content: '';
+  position: absolute;
+  top: -5px; right: 18px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #e85050, #c03030);
+  box-shadow: 0 2px 3px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.3);
+  z-index: 3;
+}
+
+/* agenda: write-on-paper input */
+.room-bedroom .agenda-add { gap: 8px !important; }
+.room-bedroom .agenda-input {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1.5px dashed rgba(90,74,32,0.35) !important;
+  border-radius: 0 !important;
+  padding: 6px 2px !important;
+  color: inherit !important;
+}
+.room-bedroom .agenda-input:focus { border-bottom-color: rgba(90,74,32,0.7) !important; background: rgba(255,255,255,0.25) !important; }
+.room-bedroom .agenda-input::placeholder { color: rgba(90,74,32,0.4) !important; }
+.room-bedroom .agenda-by {
+  background: rgba(255,255,255,0.5) !important;
+  border: 1px solid rgba(90,74,32,0.25) !important;
+  color: inherit !important;
+}
+.room-bedroom .agenda-card .mini-btn {
+  background: rgba(255,255,255,0.45) !important;
+  border: 1px solid rgba(90,74,32,0.2) !important;
+  opacity: 0.8 !important;
+}
+
+/* agenda rows: ruled-paper lines instead of filled pills */
+.room-bedroom .agenda-row {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(90,74,32,0.16) !important;
+  border-radius: 0 !important;
+  padding: 7px 2px !important;
+}
+.room-bedroom .agenda-row:hover { background: rgba(255,255,255,0.22) !important; transform: none !important; }
+.room-bedroom .agenda-check {
+  border: 1.5px solid rgba(90,74,32,0.4) !important;
+  color: rgba(90,74,32,0.5) !important;
+  background: transparent !important;
+}
+.room-bedroom .agenda-check.checked {
+  background: #50b860 !important;
+  border-color: #50b860 !important;
+  color: #fff !important;
+}
+.room-bedroom .agenda-text { color: inherit !important; }
+.room-bedroom .agenda-who { color: inherit !important; opacity: 0.55; }
+.room-bedroom .agenda-done-label { color: inherit !important; opacity: 0.4; }
+.room-bedroom .agenda-done-section { border-top-color: rgba(90,74,32,0.2) !important; }
+
+/* turn tracker: ink-on-paper rows */
+.room-bedroom .turn-row {
+  background: rgba(255,255,255,0.32) !important;
+  border-radius: 4px !important;
+}
+.room-bedroom .turn-row .role { color: inherit !important; opacity: 0.6; }
+.room-bedroom .turn-row .who { color: inherit !important; }
+.room-bedroom .turn-card .avatar { border-color: rgba(255,255,255,0.7) !important; color: #3a2a4a !important; }
+
+/* ── General bedroom overrides ─── */
+.room-bedroom .signature { color: #b8a890 !important; }
+.room-bedroom .pill { background: rgba(180,160,120,0.1); border-color: #d0c4a8; color: #8a7a68; }
+.room-bedroom .eyebrow { color: #a09080; }
+.room-bedroom h2 { color: #4a3828; }
+.room-bedroom h2 em { color: #8a5a3a; }
+.room-bedroom .weather-stat { color: #6a5a48 !important; }
+
+/* weather chip = small framed note on the shelf */
+.room-bedroom .stat {
+  background: #fdf8ed !important;
+  border: 1px solid #d8c8a8 !important;
+  box-shadow: 2px 3px 6px rgba(0,0,0,0.08) !important;
+}
+.room-bedroom .stat .glyph { background: #f0e4c8 !important; }
+.room-bedroom .stat .stat-label { color: #a09080 !important; }
+.room-bedroom .stat .stat-val { color: #4a3828 !important; }
+.room-bedroom .stat .stat-val em { color: #8a5a3a !important; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   KITCHEN (Recipes)
+   Subway tile, warm overhead light, steam wisps
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.room-kitchen .room-atmosphere {
+  background:
+    radial-gradient(ellipse 80% 40% at 50% 0%, rgba(255,240,210,0.15) 0%, transparent 60%),
+    linear-gradient(180deg, #f5efe6 0%, #ede5d8 50%, #e8dfd0 100%);
+}
+
+/* Tile pattern */
+.room-kitchen .room-atmosphere::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(90deg,
+      transparent, transparent 79px,
+      rgba(180,160,130,0.12) 79px, rgba(180,160,130,0.12) 80px),
+    repeating-linear-gradient(0deg,
+      transparent, transparent 39px,
+      rgba(180,160,130,0.12) 39px, rgba(180,160,130,0.12) 40px);
+  opacity: 0.7;
+}
+
+/* Warm overhead glow */
+.room-kitchen .room-atmosphere::after {
+  content: '';
+  position: absolute;
+  top: -15%; left: 30%; right: 30%;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255,220,150,0.2) 0%, transparent 70%);
+}
+
+/* Steam wisps */
+.steam-wisp {
+  position: absolute;
+  width: var(--w, 60px);
+  height: var(--w, 60px);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+  animation: steam-rise var(--d, 6s) ease-out infinite;
+  animation-delay: var(--delay, 0s);
+  bottom: 10%;
+  left: var(--x, 50%);
+  filter: blur(8px);
+}
+
+@keyframes steam-rise {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  20% { opacity: 0.6; }
+  100% { transform: translateY(-40vh) scale(2.5); opacity: 0; }
+}
+
+/* Dark mode kitchen */
+.theme-dark .room-kitchen .room-atmosphere {
+  background:
+    radial-gradient(ellipse 80% 40% at 50% 0%, rgba(255,200,120,0.08) 0%, transparent 60%),
+    linear-gradient(180deg, #1e1b16 0%, #1a1712 50%, #161310 100%);
+}
+.theme-dark .room-kitchen .room-atmosphere::before { opacity: 0.3; }
+.theme-dark .steam-wisp {
+  background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+}
+
+/* ── Recipes commit to a warm, bright kitchen regardless of dark toggle ─── */
+.room-kitchen .room-atmosphere,
+.theme-dark .room-kitchen .room-atmosphere {
+  background:
+    radial-gradient(ellipse 90% 38% at 50% -6%, rgba(255,236,196,0.55) 0%, transparent 58%),
+    linear-gradient(180deg, #efe2cc 0%, #e7d8be 40%, #d8c39f 72%, #a4763f 72%, #8f6534 100%) !important;
+}
+.theme-dark .room-kitchen .room-atmosphere::before { opacity: 0.6 !important; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   RECIPES — every card is a recipe index card from the box
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* page title = recipe-box label */
+.room-kitchen .dp-title { color: #4a3320 !important; }
+.room-kitchen .dp-title em { color: #b5462e !important; }
+.room-kitchen .dp-header .eyebrow { color: #9a7a52 !important; letter-spacing: 0.3em !important; }
+.room-kitchen .detail-page > .dp-header {
+  border-bottom: 2px solid rgba(120,86,48,0.25);
+  padding-bottom: 14px;
+}
+.room-kitchen .dp-filters .view-toggle { background: #f3e7cd !important; border-color: #d8c39f !important; }
+.room-kitchen .dp-filters .view-toggle button { color: #8a6a44 !important; }
+.room-kitchen .dp-filters .view-toggle button.active { background: #fffaf0 !important; color: #4a3320 !important; }
+.room-kitchen .dp-filters .pill { background: #f3e7cd !important; border-color: #d8c39f !important; color: #8a6a44 !important; }
+.room-kitchen .dp-header .btn-primary { background: #b5462e !important; border-color: #b5462e !important; color: #fff5ec !important; }
+.room-kitchen .dp-header .btn-primary:hover { background: #9b3a25 !important; border-color: #9b3a25 !important; }
+
+/* wider, fewer cards so each reads like a real recipe card */
+.room-kitchen .recipe-grid { grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 26px; }
+
+/* the index card itself — cream stock with faint blue rules */
+.room-kitchen .recipe-card {
+  background:
+    repeating-linear-gradient(180deg, transparent 0 30px, rgba(70,120,180,0.12) 30px 31px),
+    linear-gradient(180deg, #fffdf6, #fdf6e3) !important;
+  border: 1px solid #e6d6ab !important;
+  border-radius: 5px !important;
+  box-shadow:
+    0 1px 0 #fff inset,
+    2px 3px 0 #efe3c4,
+    4px 6px 0 #e7d8b8,
+    8px 12px 22px rgba(70,50,20,0.16) !important;
+  overflow: hidden !important;
+}
+.room-kitchen .recipe-card:nth-child(3n)   { transform: rotate(-0.5deg); }
+.room-kitchen .recipe-card:nth-child(3n+1) { transform: rotate(0.4deg); }
+.room-kitchen .recipe-card:hover { transform: translateY(-4px) rotate(0deg) !important; box-shadow: 0 1px 0 #fff inset, 10px 16px 30px rgba(70,50,20,0.22) !important; }
+
+/* header band = red double-rule title strip with a category wax dot */
+.room-kitchen .rc-header {
+  background: #fbf2dc !important;
+  border-bottom: 2px solid #c9554a !important;
+  box-shadow: 0 4px 0 -2px #e9b0a8 !important;
+  padding: 16px 18px 14px !important;
+}
+.room-kitchen .rc-header::after { display: none !important; }
+.room-kitchen .rc-icon {
+  width: 38px !important; height: 38px !important;
+  border-radius: 50% !important;
+  box-shadow: inset 0 -2px 4px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.15);
+  color: #4a3320 !important;
+}
+.room-kitchen .rc-header .mini-btn { background: rgba(255,255,255,0.6) !important; border-color: #e0cda0 !important; color: #b06a4a !important; }
+.room-kitchen .rc-header .mini-btn.heart-on { color: #c9554a !important; }
+
+/* body */
+.room-kitchen .rc-body { padding: 16px 22px 12px !important; }
+.room-kitchen .rc-title { color: #3c2a18 !important; font-size: 27px !important; }
+.room-kitchen .rc-sub { color: #8a6a44 !important; font-style: italic; }
+.room-kitchen .rc-section-label { color: #b5462e !important; letter-spacing: 0.18em !important; }
+
+/* ingredients = tick-box shopping list */
+.room-kitchen .rc-chips { gap: 6px 14px !important; }
+.room-kitchen .rc-chip {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  color: #4a3826 !important;
+  padding: 1px 0 1px 20px !important;
+  position: relative;
+  font-size: 12.5px !important;
+}
+.room-kitchen .rc-chip::before {
+  content: '';
+  position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+  width: 11px; height: 11px;
+  border: 1.5px solid #c79a64;
+  border-radius: 2px;
+  background: #fffdf6;
+}
+.room-kitchen .rc-chip-more {
+  color: #b5462e !important; font-weight: 600;
+  padding-left: 0 !important;
+}
+.room-kitchen .rc-chip-more::before { display: none !important; }
+
+.room-kitchen .rc-step-list { color: #5a4632 !important; }
+.room-kitchen .rc-step-list li::marker { color: #c9554a !important; }
+
+/* rating + footer */
+.room-kitchen .rc-rating .rating-block { border-top-color: rgba(120,86,48,0.25) !important; }
+.room-kitchen .rc-footer { border-top: 1px dashed #d8c39f !important; }
+.room-kitchen .recipe-card .btn {
+  background: #fbf2dc !important;
+  border-color: #d8c39f !important;
+  color: #6a5232 !important;
+}
+.room-kitchen .recipe-card .btn:hover { background: #f3e7cd !important; }
+.room-kitchen .recipe-card .btn-primary { background: #b5462e !important; border-color: #b5462e !important; color: #fff5ec !important; }
+.room-kitchen .recipe-card .rating-label.eoin { color: #c9554a !important; }
+.room-kitchen .recipe-card .rating-label.cris { color: #a06a3a !important; }
+
+/* kitchen header chrome — warm, readable over the bright room */
+.room-kitchen .names { color: #4a3320 !important; }
+.room-kitchen .names em { color: #b5462e !important; }
+.room-kitchen .brand .amp { color: #b08a55 !important; }
+.room-kitchen .brand .sub { color: #8a6a44 !important; border-left-color: rgba(120,86,48,0.25) !important; }
+.room-kitchen .weather-stat, .room-kitchen .stat { background: rgba(255,250,238,0.85) !important; border-color: #e0cda0 !important; color: #6a5232 !important; }
+.room-kitchen .stat .stat-label { color: #9a7a52 !important; }
+.room-kitchen .stat .stat-val { color: #4a3320 !important; }
+.room-kitchen .stat .stat-val em { color: #b5462e !important; }
+.room-kitchen .coming-up {
+  background: rgba(255,250,238,0.9) !important;
+  border: 1px solid #e0cda0 !important;
+}
+.room-kitchen .cu-label { color: #9a7a52 !important; }
+.room-kitchen .cu-chip { background: #fbf2dc !important; border-color: #e6d6ab !important; color: #5a4632 !important; }
+.room-kitchen .cu-title { color: #4a3320 !important; }
+.room-kitchen .cu-when { color: #a08a5e !important; }
+.room-kitchen .tab-nav {
+  background: rgba(255,250,238,0.9) !important;
+  border: 1px solid #e0cda0 !important;
+}
+.room-kitchen .tab-btn { color: #8a6a44 !important; }
+.room-kitchen .tab-btn:hover { background: rgba(181,70,46,0.08) !important; color: #4a3320 !important; }
+.room-kitchen .tab-btn.active { background: #b5462e !important; color: #fff5ec !important; }
+.room-kitchen .signature { color: #9a7a52 !important; }
+.room-kitchen .signature em { color: #b5462e !important; }
+
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   RESTAURANT (Restaurants) — a warm, cosy, homely dining room
+   Candlelight, warm wood, burgundy & gold, an intimate bistro
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.room-restaurant .room-atmosphere,
+.theme-dark .room-restaurant .room-atmosphere {
+  background:
+    radial-gradient(ellipse 60% 40% at 50% -5%, rgba(255,240,210,0.5) 0%, transparent 55%),
+    linear-gradient(180deg, #f0e0c8 0%, #e8d4b4 30%, #dfc8a4 52%, #dfc8a4 62%, transparent 62%),
+    linear-gradient(180deg, #ece0ca, #e2d0b0) !important;
+}
+/* warm wainscoting along the bottom third */
+.room-restaurant .room-atmosphere::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: none;
+}
+.room-restaurant .room-atmosphere::after {
+  content: '';
+  position: absolute; inset: auto 0 0 0; top: auto;
+  height: 38%;
+  background:
+    repeating-linear-gradient(90deg, rgba(120,80,40,0.08) 0 2px, transparent 2px 80px),
+    linear-gradient(180deg, #c4986a 0%, #a87a4c 50%, #8a6438 100%);
+  border-top: 4px solid #d4a872;
+  box-shadow: 0 -4px 14px rgba(0,0,0,0.08);
+}
+
+/* Candle flames (rendered by RestaurantDecorations) */
+.candle {
+  position: absolute;
+  width: var(--s, 8px); height: var(--s, 8px);
+  border-radius: 50%;
+  background: rgba(255,184,72,0.95);
+  box-shadow:
+    0 0 20px 8px rgba(255,160,50,0.32),
+    0 0 60px 22px rgba(255,120,30,0.12);
+  animation: candle-flicker var(--d, 2s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+@keyframes candle-flicker {
+  0%, 100% { opacity: 0.7; transform: scale(1) translateY(0); }
+  25% { opacity: 1; transform: scale(1.15) translateY(-1px); }
+  50% { opacity: 0.6; transform: scale(0.95) translateY(1px); }
+  75% { opacity: 0.9; transform: scale(1.05) translateY(-0.5px); }
+}
+
+/* Warm bokeh */
+.bokeh {
+  position: absolute;
+  width: var(--s, 40px); height: var(--s, 40px);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--c, rgba(255,180,80,0.08)) 0%, transparent 70%);
+  animation: bokeh-drift var(--d, 20s) ease-in-out infinite alternate;
+  animation-delay: var(--delay, 0s);
+  filter: blur(var(--blur, 10px));
+}
+@keyframes bokeh-drift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(var(--dx, 30px), var(--dy, -20px)); }
+}
+
+
+
+/* ── Cosy menu cards & warm header chrome ─────────────────────────────────── */
+/* warm elegant page title */
+.room-restaurant .dp-title { color: #4a3018 !important; }
+.room-restaurant .dp-title em { color: #8c3a2e !important; }
+.room-restaurant .dp-header .eyebrow { color: #9a7a52 !important; letter-spacing: 0.32em !important; }
+.room-restaurant .dp-header { border-bottom: none !important; }
+
+/* readable header chrome over the warm dark room */
+.room-restaurant .names { color: #4a3018 !important; }
+.room-restaurant .names em { color: #8c3a2e !important; }
+.room-restaurant .brand .amp { color: #b08a55 !important; }
+.room-restaurant .brand .sub { color: #8a6a44 !important; border-left-color: rgba(120,86,48,0.25) !important; }
+.room-restaurant .app-header { background: transparent !important; }
+.room-restaurant .stat { background: rgba(255,250,238,0.85) !important; border-color: #d8c194 !important; }
+.room-restaurant .stat .glyph { background: #f3e7cd !important; }
+.room-restaurant .stat .stat-label { color: #9a7a52 !important; }
+.room-restaurant .stat .stat-val { color: #4a3018 !important; }
+.room-restaurant .stat .stat-val em { color: #8c3a2e !important; }
+.room-restaurant .coming-up { background: rgba(255,250,238,0.9) !important; border: 1px solid #d8c194 !important; }
+.room-restaurant .cu-label { color: #9a7a52 !important; }
+.room-restaurant .cu-chip { background: #fbf2dc !important; border-color: #d8c194 !important; color: #5a4228 !important; }
+.room-restaurant .cu-title { color: #4a3018 !important; }
+.room-restaurant .cu-when { color: #a08a5e !important; }
+.room-restaurant .tab-nav { background: rgba(255,250,238,0.9) !important; border: 1px solid #d8c194 !important; }
+.room-restaurant .tab-btn { color: #8a6a44 !important; }
+.room-restaurant .tab-btn:hover { background: rgba(140,58,46,0.08) !important; color: #4a3018 !important; }
+.room-restaurant .tab-btn.active { background: #8c3a2e !important; color: #f7e6c8 !important; }
+.room-restaurant .signature { color: #9a7a52 !important; }
+.room-restaurant .signature em { color: #8c3a2e !important; }
+
+/* filters */
+.room-restaurant .dp-filters .view-toggle { background: rgba(255,250,238,0.85) !important; border-color: #d8c194 !important; }
+.room-restaurant .dp-filters .view-toggle button { color: #8a6a44 !important; }
+.room-restaurant .dp-filters .view-toggle button.active { background: #8c3a2e !important; color: #f7e6c8 !important; }
+.room-restaurant .dp-filters .pill { background: rgba(255,250,238,0.85) !important; border-color: #d8c194 !important; color: #8a6a44 !important; }
+.room-restaurant .city-filter-label { color: #9a7a52 !important; }
+.room-restaurant .city-select { background-color: rgba(255,250,238,0.92) !important; border-color: #d8c194 !important; color: #4a3018 !important; }
+.room-restaurant .dp-header .btn-primary { background: #8c3a2e !important; border-color: #8c3a2e !important; color: #f7e6c8 !important; }
+
+/* the menu card — ivory bistro menu with a gold double-rule frame */
+.room-restaurant .place-card {
+  background: linear-gradient(180deg, #fdf6e6, #f7edd6) !important;
+  border: 1px solid #c79a4e !important;
+  border-radius: 3px !important;
+  box-shadow:
+    inset 0 0 0 1px #fbf3e0,
+    inset 0 0 0 3px #c79a4e55,
+    0 14px 30px rgba(20,12,6,0.45) !important;
+  backdrop-filter: none !important;
+}
+.room-restaurant .place-card:hover { transform: translateY(-4px) !important; box-shadow: inset 0 0 0 1px #fbf3e0, inset 0 0 0 3px #c79a4e77, 0 20px 40px rgba(20,12,6,0.55) !important; }
+
+/* banner = menu name-plate: ivory with a centred emblem & rule, not a colour band */
+.room-restaurant .pc-banner {
+  background: transparent !important;
+  border-bottom: 1px solid #d8c194 !important;
+  box-shadow: 0 2px 0 -1px #ecdcb4 !important;
+  padding: 22px 20px 18px !important;
+  flex-direction: column !important;
+  gap: 8px;
+}
+.room-restaurant .pc-banner::after {
+  content: '· à la carte ·';
+  position: absolute; bottom: 5px; left: 0; right: 0;
+  text-align: center;
+  font-family: var(--font-display); font-style: italic; font-size: 11px;
+  color: #b58a52; opacity: 0.8; background: none; width: auto; height: auto;
+}
+.room-restaurant .pc-banner::before { display: none !important; }
+.room-restaurant .pc-icon {
+  background: #8c3a2e !important;
+  color: #f7e6c8 !important;
+  border: 2px solid #c79a4e !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  border-radius: 50% !important;
+}
+.room-restaurant .pc-banner .mini-btn { background: rgba(255,255,255,0.7) !important; border-color: #d8c194 !important; color: #8c3a2e !important; }
+
+.room-restaurant .pc-title { color: #3a2616 !important; }
+.room-restaurant .pc-sub { color: #8a6a44 !important; font-style: italic; }
+.room-restaurant .place-card .pill { background: #f3e8cf !important; border-color: rgba(199,154,78,0.4) !important; color: #6a4a28 !important; }
+.room-restaurant.room-restaurant .place-card .visited-badge { background: #f3e8cf !important; border-color: rgba(199,154,78,0.4) !important; color: #8a5a32 !important; }
+.room-restaurant.room-restaurant .place-card .visited-badge.is-visited { background: #e7d3a0 !important; border-color: #c79a4e !important; color: #7a4a1a !important; }
+.room-restaurant .place-card .rating-label.eoin { color: #b14a3a !important; }
+.room-restaurant .place-card .rating-label.cris { color: #c79a4e !important; }
+.room-restaurant .place-card .rating-block { border-top: 1px dotted #cbb285 !important; }
+.room-restaurant .pc-footer { border-top: 1px dotted #cbb285 !important; }
+.room-restaurant.room-restaurant .place-card .btn { background: #f3e8cf !important; border-color: rgba(199,154,78,0.45) !important; color: #6a4a28 !important; }
+.room-restaurant.room-restaurant .place-card .btn:hover { background: #ecdcb4 !important; }
+.room-restaurant.room-restaurant .place-card .btn-primary { background: #8c3a2e !important; border-color: #8c3a2e !important; color: #f7e6c8 !important; }
+.room-restaurant.room-restaurant .place-card .btn-trip { background: #f6ecd0 !important; border-color: #c79a4e !important; color: #8a5a1a !important; }
+.room-restaurant .city-trip-banner { background: rgba(255,250,238,0.88) !important; color: #4a3018 !important; }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   GARDEN (Activities)
+   Dappled sunlight, floating leaves, fresh greens
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.room-garden .room-atmosphere {
+  background:
+    radial-gradient(ellipse 50% 50% at 70% 20%, rgba(255,250,200,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 20% 60%, rgba(100,180,100,0.06) 0%, transparent 60%),
+    linear-gradient(170deg, #e8f0e0 0%, #dce8d0 40%, #d0e0c0 100%);
+}
+
+/* Dappled light */
+.room-garden .room-atmosphere::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle 80px at 30% 25%, rgba(255,255,200,0.12) 0%, transparent 100%),
+    radial-gradient(circle 60px at 65% 35%, rgba(255,255,200,0.1) 0%, transparent 100%),
+    radial-gradient(circle 90px at 80% 65%, rgba(255,255,200,0.08) 0%, transparent 100%),
+    radial-gradient(circle 50px at 15% 75%, rgba(255,255,200,0.1) 0%, transparent 100%);
+  animation: dapple-shift 12s ease-in-out infinite alternate;
+}
+
+@keyframes dapple-shift {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(15px, -10px) scale(1.05); }
+}
+
+/* Floating leaves */
+.leaf {
+  position: absolute;
+  width: var(--s, 12px); height: var(--s, 12px);
+  background: var(--c, rgba(120,180,80,0.5));
+  border-radius: 0 50% 50% 50%;
+  transform: rotate(45deg);
+  animation: leaf-fall var(--d, 14s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  top: -20px;
+  left: var(--x, 50%);
+}
+
+@keyframes leaf-fall {
+  0% { transform: rotate(45deg) translate(0, 0); opacity: 0; }
+  10% { opacity: 0.7; }
+  100% { transform: rotate(405deg) translate(var(--dx, 60px), calc(100vh + 40px)); opacity: 0; }
+}
+
+/* Dark mode garden */
+.theme-dark .room-garden .room-atmosphere {
+  background:
+    radial-gradient(ellipse 50% 50% at 70% 20%, rgba(200,220,180,0.06) 0%, transparent 60%),
+    linear-gradient(170deg, #141e10 0%, #121a0e 40%, #101608 100%);
+}
+.theme-dark .leaf { background: var(--c, rgba(80,140,60,0.4)); }
+
+/* ── Garden commits to bright daylight regardless of dark toggle ─── */
+.room-garden .room-atmosphere,
+.theme-dark .room-garden .room-atmosphere {
+  background:
+    radial-gradient(ellipse 60% 50% at 72% 12%, rgba(255,250,200,0.45) 0%, transparent 60%),
+    linear-gradient(170deg, #dfeede 0%, #cfe6c4 34%, #bcdcae 56%, #bcdcae 64%, transparent 64%),
+    linear-gradient(180deg, #e8f2e2, #d4e8c8) !important;
+}
+.theme-dark .room-garden .room-atmosphere::before { opacity: 1 !important; }
+/* soil bed + grass blades along the bottom */
+.room-garden .room-atmosphere::after {
+  content: '';
+  position: absolute; inset: auto 0 0 0; top: auto;
+  height: 120px;
+  background:
+    linear-gradient(180deg, transparent, #6b4a2a 18%, #5a3d22 100%);
+  box-shadow: 0 -2px 0 #3f7d3a, 0 -5px 10px rgba(0,0,0,0.12);
+}
+.theme-dark .room-garden .room-atmosphere::after { opacity: 1; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ACTIVITIES — every card is a seed packet staked in the bed
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* header chrome — fresh greens */
+.room-garden .dp-title { color: #2f5d2b !important; }
+.room-garden .dp-title em { color: #c2703d !important; font-family: var(--font-display); }
+.room-garden .dp-header .eyebrow { color: #5a7d3a !important; letter-spacing: 0.3em !important; }
+.room-garden .names { color: #2f5d2b !important; }
+.room-garden .names em { color: #c2703d !important; }
+.room-garden .brand .amp { color: #6a9450 !important; }
+.room-garden .brand .sub { color: #5a7d3a !important; border-left-color: rgba(60,110,50,0.3) !important; }
+.room-garden .stat { background: rgba(252,255,248,0.85) !important; border-color: rgba(60,110,50,0.25) !important; }
+.room-garden .stat .stat-label { color: #5a7d3a !important; }
+.room-garden .stat .stat-val { color: #2f5d2b !important; }
+.room-garden .stat .stat-val em { color: #c2703d !important; }
+.room-garden .coming-up { background: rgba(252,255,248,0.88) !important; border: 1px solid rgba(60,110,50,0.22) !important; }
+.room-garden .cu-label { color: #5a7d3a !important; }
+.room-garden .cu-chip { background: #f1f7ec !important; border-color: rgba(60,110,50,0.2) !important; color: #3a5a30 !important; }
+.room-garden .cu-title { color: #2f5d2b !important; }
+.room-garden .cu-when { color: #7a9a60 !important; }
+.room-garden .tab-nav { background: rgba(252,255,248,0.9) !important; border: 1px solid rgba(60,110,50,0.22) !important; }
+.room-garden .tab-btn { color: #5a7d3a !important; }
+.room-garden .tab-btn:hover { background: rgba(60,125,58,0.1) !important; color: #2f5d2b !important; }
+.room-garden .tab-btn.active { background: #3f7d3a !important; color: #fff !important; }
+.room-garden .signature { color: #5a7d3a !important; }
+.room-garden .signature em { color: #c2703d !important; }
+.room-garden .dp-header .btn-primary { background: #3f7d3a !important; border-color: #3f7d3a !important; color: #fff !important; }
+
+/* filters */
+.room-garden .dp-filters .view-toggle { background: rgba(252,255,248,0.85) !important; border-color: rgba(60,110,50,0.25) !important; }
+.room-garden .dp-filters .view-toggle button { color: #5a7d3a !important; }
+.room-garden .dp-filters .view-toggle button.active { background: #3f7d3a !important; color: #fff !important; }
+.room-garden .dp-filters .pill { background: rgba(252,255,248,0.82) !important; border-color: rgba(60,110,50,0.25) !important; color: #5a7d3a !important; }
+.room-garden .city-filter-label { color: #5a7d3a !important; }
+.room-garden .city-select { background-color: rgba(252,255,248,0.9) !important; border-color: rgba(60,110,50,0.3) !important; color: #2f5d2b !important; }
+
+/* the seed packet */
+.room-garden .place-card {
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80'><filter id='k'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' seed='5'/><feColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.42 0 0 0 0 0.22 0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23k)'/></svg>"),
+    linear-gradient(180deg, #f3e9cf, #ecdfbf) !important;
+  border: 1px solid #cdb888 !important;
+  border-radius: 4px 4px 6px 6px !important;
+  box-shadow: 0 12px 26px rgba(50,40,20,0.22) !important;
+  border-color: rgba(60,110,50,0.15) !important;
+  position: relative;
+}
+/* punched hang-hole at the top of the packet */
+.room-garden .place-card::before {
+  content: '';
+  position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+  width: 16px; height: 16px; border-radius: 50%;
+  background: radial-gradient(circle at 45% 40%, rgba(0,0,0,0.28), rgba(0,0,0,0.16));
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.5);
+  z-index: 4;
+}
+.room-garden .place-card:hover { transform: translateY(-4px) !important; box-shadow: 0 18px 34px rgba(50,40,20,0.28) !important; }
+
+/* illustration window = botanical panel */
+.room-garden .pc-banner {
+  padding: 30px 20px 24px !important;
+  border-bottom: 2px dashed #cdb888 !important;
+  margin: 0 0 0 0;
+}
+.room-garden .pc-banner::after {
+  content: 'SEEDS';
+  position: absolute; bottom: 6px; left: 0; right: 0;
+  text-align: center;
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.4em;
+  color: rgba(47,93,43,0.5);
+  opacity: 1; background: none; width: auto; height: auto;
+}
+.room-garden .pc-icon {
+  border-radius: 50% !important;
+  border: 2px solid #fffef8 !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+  color: #2f3a20 !important;
+}
+.room-garden .pc-banner .mini-btn { background: rgba(255,255,255,0.75) !important; border-color: #cdb888 !important; color: #3f7d3a !important; }
+
+.room-garden .pc-title { color: #2f4a22 !important; }
+.room-garden .pc-sub { color: #6a7a4a !important; font-style: italic; }
+.room-garden .place-card .pill { background: #eef4e4 !important; border-color: rgba(60,110,50,0.22) !important; color: #4a6030 !important; }
+.room-garden .place-card .visited-badge { background: #eef4e4 !important; border-color: rgba(60,110,50,0.25) !important; color: #5a7d3a !important; }
+.room-garden .place-card .visited-badge.is-visited { background: #d9ecc4 !important; border-color: #6aa84f !important; color: #3a6020 !important; }
+.room-garden .place-card .rating-label.eoin { color: #c2703d !important; }
+.room-garden .place-card .rating-label.cris { color: #3f7d3a !important; }
+.room-garden .pc-footer { border-top: 2px dashed #cdb888 !important; }
+.room-garden .place-card .btn { background: #f3ead2 !important; border-color: rgba(60,110,50,0.3) !important; color: #4a6030 !important; }
+.room-garden .place-card .btn:hover { background: #e9dcbb !important; }
+.room-garden .place-card .btn-primary { background: #3f7d3a !important; border-color: #3f7d3a !important; color: #fff !important; }
+.room-garden .place-card .btn-trip { background: #fff3df !important; border-color: #c2703d !important; color: #9a5224 !important; }
+.room-garden .city-trip-banner { background: rgba(252,255,248,0.85) !important; color: #4a6030 !important; }
+
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   LIVING ROOM (Watch Together)
+   Fireplace glow, lamp warmth, cozy vignette
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.room-livingroom .room-atmosphere {
+  background:
+    radial-gradient(ellipse 60% 40% at 55% -5%, rgba(255,245,220,0.5) 0%, transparent 55%),
+    linear-gradient(180deg, #f2e4d0 0%, #ece0ca 28%, #e6d6be 50%, #e6d6be 58%, transparent 58%),
+    linear-gradient(180deg, #ece0ca, #e0d0b6);
+}
+
+/* Soft shadow from a picture rail */
+.room-livingroom .room-atmosphere::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: none;
+}
+
+/* Warm wooden floor along the bottom */
+.room-livingroom .room-atmosphere::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0; top: auto;
+  height: 42%;
+  background:
+    repeating-linear-gradient(90deg, rgba(100,70,40,0.06) 0 2px, transparent 2px 120px),
+    linear-gradient(180deg, #b8946a 0%, #a07a52 50%, #8a6840 100%);
+  border-top: 3px solid #c8a474;
+  box-shadow: 0 -3px 12px rgba(0,0,0,0.08);
+}
+
+@keyframes fire-glow {
+  0%, 100% { opacity: 0.6; transform: scaleY(1); }
+  30% { opacity: 1; transform: scaleY(1.05); }
+  70% { opacity: 0.8; transform: scaleY(0.97); }
+}
+
+/* Embers */
+.ember {
+  position: absolute;
+  width: var(--s, 3px); height: var(--s, 3px);
+  border-radius: 50%;
+  background: rgba(255,140,40,0.8);
+  box-shadow: 0 0 4px 1px rgba(255,100,20,0.4);
+  animation: ember-rise var(--d, 5s) ease-out infinite;
+  animation-delay: var(--delay, 0s);
+  bottom: 5%;
+  left: var(--x, 50%);
+}
+
+@keyframes ember-rise {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  15% { opacity: 0.9; }
+  100% { transform: translateY(-30vh) translateX(var(--dx, 20px)) scale(0); opacity: 0; }
+}
+
+/* ── Living room: bright, cosy, warm — like a sunny afternoon den ─── */
+.room-livingroom .room-atmosphere,
+.theme-dark .room-livingroom .room-atmosphere {
+  background:
+    radial-gradient(ellipse 60% 40% at 55% -5%, rgba(255,245,220,0.5) 0%, transparent 55%),
+    linear-gradient(180deg, #f2e4d0 0%, #ece0ca 28%, #e6d6be 50%, #e6d6be 58%, transparent 58%),
+    linear-gradient(180deg, #ece0ca, #e0d0b6) !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   WATCH TOGETHER — every card is a VHS case on the shelf
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Cosy living-room furniture (decorative, behind content) ─── */
+.lr-tv {
+  position: absolute; left: 4%; bottom: 8%;
+  width: 220px; z-index: 0;
+}
+.lr-tv-screen {
+  width: 220px; height: 132px;
+  background: #0c0a08;
+  border: 7px solid #2a1d14;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 0 2px #1a120c;
+  overflow: hidden; position: relative;
+}
+.lr-tv-glow {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 70% at 40% 40%, rgba(120,180,255,0.45), transparent 70%),
+    radial-gradient(ellipse 50% 60% at 70% 60%, rgba(255,150,90,0.35), transparent 70%),
+    linear-gradient(160deg, #1a2a44, #2a1a30);
+  animation: tv-flicker 5s ease-in-out infinite;
+}
+@keyframes tv-flicker {
+  0%,100% { opacity: 0.85; filter: brightness(1); }
+  40% { opacity: 1; filter: brightness(1.15); }
+  62% { opacity: 0.8; filter: brightness(0.92); }
+  78% { opacity: 1; filter: brightness(1.1); }
+}
+.lr-tv-stand { width: 70px; height: 16px; margin: 0 auto; background: linear-gradient(180deg, #3a2a1c, #241710); border-radius: 0 0 6px 6px; }
+.lr-tv::after { /* warm glow the TV casts into the room */
+  content: ''; position: absolute; left: -60px; top: -40px; width: 340px; height: 240px;
+  background: radial-gradient(ellipse, rgba(120,160,220,0.10), transparent 70%);
+  pointer-events: none; z-index: -1;
+}
+.lr-lamp {
+  position: absolute; right: 6%; top: 6%; width: 70px; z-index: 0;
+}
+.lr-lamp-shade {
+  width: 64px; height: 34px; margin: 0 auto;
+  background: linear-gradient(180deg, #d9a45a, #b5802f);
+  border-radius: 40% 40% 12% 12%;
+  box-shadow: 0 0 30px 8px rgba(255,180,90,0.25);
+}
+.lr-lamp-pole { width: 4px; height: 120px; margin: 0 auto; background: linear-gradient(90deg, #3a2a1c, #5a4230, #3a2a1c); }
+.lr-lamp-glow {
+  position: absolute; top: -30px; left: -60px; width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(255,190,110,0.22), transparent 65%);
+  animation: lamp-pulse 5s ease-in-out infinite; pointer-events: none;
+}
+.lr-plant {
+  position: absolute; right: 3%; bottom: 7%; width: 90px; height: 120px; z-index: 0;
+  background:
+    radial-gradient(ellipse 18px 60px at 32% 30%, rgba(90,140,70,0.5), transparent 70%),
+    radial-gradient(ellipse 16px 54px at 50% 22%, rgba(110,160,80,0.5), transparent 70%),
+    radial-gradient(ellipse 18px 58px at 68% 30%, rgba(80,130,60,0.5), transparent 70%);
+}
+.lr-plant::after {
+  content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 46px; height: 42px;
+  background: linear-gradient(180deg, #9a5a34, #6a3a1e); border-radius: 6px 6px 10px 10px;
+}
+
+
+/* warm, lamp-lit header chrome — now on bright walls */
+.room-livingroom .dp-title { color: #4a3020 !important; }
+.room-livingroom .dp-title em { color: #b5622e !important; }
+.room-livingroom .dp-header .eyebrow { color: #9a7a52 !important; letter-spacing: 0.3em !important; }
+.room-livingroom .names { color: #4a3020 !important; }
+.room-livingroom .names em { color: #b5622e !important; }
+.room-livingroom .brand .amp { color: #b08a55 !important; }
+.room-livingroom .brand .sub { color: #8a6a44 !important; border-left-color: rgba(120,86,48,0.25) !important; }
+.room-livingroom .app-header { background: transparent !important; }
+.room-livingroom .stat { background: rgba(255,250,238,0.85) !important; border-color: #d8c8a8 !important; }
+.room-livingroom .stat .stat-label { color: #9a7a52 !important; }
+.room-livingroom .stat .stat-val { color: #4a3020 !important; }
+.room-livingroom .stat .stat-val em { color: #b5622e !important; }
+.room-livingroom .coming-up { background: rgba(255,250,238,0.9) !important; border: 1px solid #d8c8a8 !important; }
+.room-livingroom .cu-label { color: #9a7a52 !important; }
+.room-livingroom .cu-chip { background: #fbf2dc !important; border-color: #d8c8a8 !important; color: #5a4228 !important; }
+.room-livingroom .cu-title { color: #4a3020 !important; }
+.room-livingroom .cu-when { color: #a08a5e !important; }
+.room-livingroom .tab-nav { background: rgba(255,250,238,0.9) !important; border: 1px solid #d8c8a8 !important; }
+.room-livingroom .tab-btn { color: #8a6a44 !important; }
+.room-livingroom .tab-btn:hover { background: rgba(181,98,46,0.08) !important; color: #4a3020 !important; }
+.room-livingroom .tab-btn.active { background: #b5622e !important; color: #fff5ec !important; }
+.room-livingroom .signature { color: #9a7a52 !important; }
+.room-livingroom .signature em { color: #b5622e !important; }
+.room-livingroom .dp-header .btn-primary { background: #b5622e !important; border-color: #b5622e !important; color: #fff5ec !important; }
+
+/* filters */
+.room-livingroom .dp-filters .view-toggle { background: rgba(255,250,238,0.85) !important; border-color: #d8c8a8 !important; }
+.room-livingroom .dp-filters .view-toggle button { color: #8a6a44 !important; }
+.room-livingroom .dp-filters .view-toggle button.active { background: #b5622e !important; color: #fff5ec !important; }
+.room-livingroom .dp-filters .pill { background: rgba(255,250,238,0.85) !important; border-color: #d8c8a8 !important; color: #8a6a44 !important; }
+
+/* the VHS case — warm brown case on a bright shelf */
+.room-livingroom .watch-card {
+  background: linear-gradient(160deg, #6a5440, #4e3c2c) !important;
+  border: none !important;
+  border-radius: 4px !important;
+  box-shadow:
+    0 0 0 2px #3a2a1c,
+    inset 2px 0 0 rgba(255,255,255,0.12),
+    inset -2px 0 6px rgba(0,0,0,0.3),
+    0 12px 26px rgba(40,28,16,0.35) !important;
+  backdrop-filter: none !important;
+  position: relative;
+  overflow: hidden !important;
+}
+/* plastic spine highlight down the left edge */
+.room-livingroom .watch-card::before {
+  content: '';
+  position: absolute; top: 0; bottom: 0; left: 0; width: 9px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.14), rgba(255,255,255,0.02) 60%, transparent);
+  z-index: 3; pointer-events: none;
+}
+.room-livingroom .watch-card:hover { transform: translateY(-5px) !important; box-shadow: 0 0 0 2px #0c0907, 0 22px 40px rgba(0,0,0,0.6) !important; }
+
+/* poster = printed sleeve art with a glossy sheen */
+.room-livingroom .wc-poster {
+  box-shadow: inset 0 0 50px rgba(0,0,0,0.4);
+}
+.room-livingroom .wc-poster::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.10) 45%, transparent 55%);
+  pointer-events: none;
+}
+.room-livingroom .wc-poster > div { color: rgba(255,240,220,0.45) !important; }
+.room-livingroom .wc-kind-badge {
+  background: #e8c14a !important;
+  border-color: #b89a30 !important;
+  color: #3a2a10 !important;
+  font-weight: 700 !important;
+}
+.room-livingroom .wc-poster .mini-btn { background: rgba(20,16,12,0.7) !important; border-color: rgba(255,200,140,0.25) !important; color: #e8a85a !important; }
+.room-livingroom .wc-poster .mini-btn.heart-on { color: #ff8aa8 !important; }
+
+/* sleeve label */
+/* sleeve label = aged printed paper spine, clearly a physical case */
+.room-livingroom .wc-body {
+  background: linear-gradient(180deg, #f3e6c8, #e8d6b0) !important;
+  border-top: 2px solid #0c0907;
+  margin: 0 6px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+}
+.room-livingroom .wc-title { color: #2a1d12 !important; }
+.room-livingroom .wc-sub { color: #7a5a38 !important; }
+.room-livingroom .watch-card .rating-block { border-top-color: rgba(120,80,40,0.25) !important; }
+.room-livingroom .watch-card .rating-label.eoin { color: #b14a4a !important; }
+.room-livingroom .watch-card .rating-label.cris { color: #9a6a2a !important; }
+.room-livingroom .wc-footer { border-top: 1px dashed rgba(120,80,40,0.3) !important; background: linear-gradient(180deg, #e8d6b0, #ddc89c); margin: 0 6px 6px; }
+.room-livingroom .watch-card .btn { background: rgba(255,255,255,0.5) !important; border-color: rgba(120,80,40,0.3) !important; color: #6a4a24 !important; }
+.room-livingroom .watch-card .btn:hover { background: rgba(255,255,255,0.7) !important; }
+.room-livingroom .watch-card .btn-primary { background: #8c3a2e !important; border-color: #8c3a2e !important; color: #f7e6c8 !important; }
+
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   BEACH (Holidays)
+   Sun-washed, water shimmer, waves
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.room-beach .room-atmosphere {
+  background:
+    radial-gradient(ellipse 60% 30% at 60% 10%, rgba(255,250,220,0.2) 0%, transparent 60%),
+    linear-gradient(180deg, #87CEEB 0%, #B0E0E6 25%, #F0E68C 60%, #DEB887 80%, #D2B48C 100%);
+}
+
+/* Sun glare */
+.room-beach .room-atmosphere::before {
+  content: '';
+  position: absolute;
+  top: -5%; right: 15%;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,220,0.4) 0%, rgba(255,250,200,0.1) 40%, transparent 70%);
+  animation: sun-pulse 6s ease-in-out infinite;
+}
+
+@keyframes sun-pulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* Water shimmer at bottom */
+.room-beach .room-atmosphere::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 30%;
+  background:
+    repeating-linear-gradient(
+      -15deg,
+      transparent, transparent 8px,
+      rgba(100,200,240,0.04) 8px, rgba(100,200,240,0.04) 16px
+    );
+  animation: shimmer-slide 8s linear infinite;
+}
+
+@keyframes shimmer-slide {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(32px); }
+}
+
+/* Wave ripple */
+.wave-line {
+  position: absolute;
+  bottom: var(--y, 25%);
+  left: -10%;
+  width: 120%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(100,200,240,0.15), rgba(100,200,240,0.2), rgba(100,200,240,0.15), transparent);
+  animation: wave-drift var(--d, 6s) ease-in-out infinite alternate;
+  animation-delay: var(--delay, 0s);
+  border-radius: 999px;
+}
+
+@keyframes wave-drift {
+  0% { transform: translateX(-3%) scaleX(1); opacity: 0.4; }
+  100% { transform: translateX(3%) scaleX(1.02); opacity: 0.8; }
+}
+
+/* Dark mode beach — moonlit */
+.theme-dark .room-beach .room-atmosphere {
+  background:
+    radial-gradient(ellipse 40% 30% at 70% 15%, rgba(200,220,255,0.08) 0%, transparent 60%),
+    linear-gradient(180deg, #0a1628 0%, #0d1a30 25%, #1a1e2a 60%, #1e1c18 80%, #1a1814 100%);
+}
+.theme-dark .room-beach .room-atmosphere::before {
+  background: radial-gradient(circle, rgba(200,220,255,0.15) 0%, rgba(180,200,240,0.04) 40%, transparent 70%);
+}
+
+/* ── Beach commits to a bright, sunny day regardless of dark toggle ─── */
+.room-beach .room-atmosphere,
+.theme-dark .room-beach .room-atmosphere {
+  background:
+    radial-gradient(ellipse 60% 30% at 62% 6%, rgba(255,250,220,0.5) 0%, transparent 56%),
+    linear-gradient(180deg, #8fd2ec 0%, #aee2ef 24%, #d8f0ee 46%, #f3e6c0 60%, #efd9a6 78%, #e7cb8f 100%) !important;
+}
+.theme-dark .room-beach .room-atmosphere::before {
+  background: radial-gradient(circle, rgba(255,255,220,0.4) 0%, rgba(255,250,200,0.1) 40%, transparent 70%) !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   HOLIDAYS — every trip is a postcard home from the beach
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* sunny header chrome */
+.room-beach .dp-title { color: #15596b !important; }
+.room-beach .dp-title em { color: #ef6f5e !important; }
+.room-beach .dp-header .eyebrow { color: #2a8ca0 !important; letter-spacing: 0.3em !important; }
+.room-beach .names { color: #15596b !important; }
+.room-beach .names em { color: #ef6f5e !important; }
+.room-beach .brand .amp { color: #3aa6bb !important; }
+.room-beach .brand .sub { color: #2a8ca0 !important; border-left-color: rgba(42,140,160,0.3) !important; }
+.room-beach .app-header { background: transparent !important; }
+.room-beach .stat { background: rgba(255,253,247,0.85) !important; border-color: rgba(42,140,160,0.22) !important; }
+.room-beach .stat .stat-label { color: #2a8ca0 !important; }
+.room-beach .stat .stat-val { color: #15596b !important; }
+.room-beach .stat .stat-val em { color: #ef6f5e !important; }
+.room-beach .coming-up { background: rgba(255,253,247,0.88) !important; border: 1px solid rgba(42,140,160,0.2) !important; }
+.room-beach .cu-label { color: #2a8ca0 !important; }
+.room-beach .cu-chip { background: #eef8f8 !important; border-color: rgba(42,140,160,0.18) !important; color: #1d5a68 !important; }
+.room-beach .cu-title { color: #15596b !important; }
+.room-beach .cu-when { color: #5a9aa6 !important; }
+.room-beach .tab-nav { background: rgba(255,253,247,0.9) !important; border: 1px solid rgba(42,140,160,0.2) !important; }
+.room-beach .tab-btn { color: #2a8ca0 !important; }
+.room-beach .tab-btn:hover { background: rgba(42,140,160,0.1) !important; color: #15596b !important; }
+.room-beach .tab-btn.active { background: #1b9aaa !important; color: #fff !important; }
+.room-beach .signature { color: #2a8ca0 !important; }
+.room-beach .signature em { color: #ef6f5e !important; }
+
+/* the postcard */
+.room-beach .trip-card {
+  background: linear-gradient(180deg, #fffdf6, #fdf4e2) !important;
+  border: none !important;
+  border-radius: 4px !important;
+  box-shadow:
+    0 0 0 1px #e6d3ad,
+    0 14px 30px rgba(40,80,90,0.22) !important;
+  backdrop-filter: none !important;
+  padding: 9px !important;
+  position: relative;
+}
+.room-beach .trip-grid > .trip-card:nth-child(2n) { transform: rotate(-0.6deg); }
+.room-beach .trip-grid > .trip-card:nth-child(2n+1) { transform: rotate(0.5deg); }
+.room-beach .trip-card:hover { transform: translateY(-4px) rotate(0deg) !important; box-shadow: 0 0 0 1px #e6d3ad, 0 22px 40px rgba(40,80,90,0.3) !important; }
+/* airmail stripe frame */
+.room-beach .trip-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  border: 4px solid transparent;
+  border-image: repeating-linear-gradient(45deg, #ef6f5e 0 10px, #fff 10px 20px, #2a8ca0 20px 30px, #fff 30px 40px) 4;
+  pointer-events: none; opacity: 0.5;
+  border-radius: 4px;
+}
+
+/* postcard photo */
+.room-beach .tc-banner {
+  border-radius: 3px !important;
+  border: 4px solid #fffdf6 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  overflow: hidden;
+}
+.room-beach .tc-icon { color: rgba(255,255,255,0.92) !important; border-color: rgba(255,255,255,0.6) !important; }
+/* status = postage stamp */
+.room-beach .tc-status {
+  top: 16px !important; right: 18px !important;
+  background: #fffdf6 !important;
+  border: none !important;
+  padding: 8px 10px !important;
+  color: #15596b !important;
+  box-shadow: 0 0 0 3px #fffdf6, 0 0 0 4px #cdb888;
+  border-radius: 2px !important;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+}
+.room-beach .tc-status[data-status='booked'] { background: #d6f0e0 !important; color: #2a7d52 !important; }
+.room-beach .tc-status[data-status='completed'] { background: #e7e0f5 !important; color: #6a4a9a !important; }
+
+.room-beach .tc-body { padding: 16px 14px 12px !important; }
+.room-beach .tc-title { color: #15596b !important; }
+.room-beach .tc-dest { color: #5a8a92 !important; font-style: italic; }
+.room-beach .trip-card .pill { background: #eef8f8 !important; border-color: rgba(42,140,160,0.2) !important; color: #2a7a86 !important; }
+.room-beach .tc-budget-label { color: #5a9aa6 !important; }
+.room-beach .tc-budget-val { color: #15596b !important; }
+.room-beach .tc-budget-bar { background: #ece0c4 !important; border-color: rgba(42,140,160,0.15) !important; }
+.room-beach .tc-quick-stats { border-top-color: rgba(42,140,160,0.2) !important; }
+.room-beach .tc-qs-num { color: #1b9aaa !important; }
+.room-beach .tc-qs-label { color: #5a9aa6 !important; }
+.room-beach .tc-countdown { color: #ef6f5e !important; }
+.room-beach .tc-footer { border-top: 1px dashed rgba(42,140,160,0.25) !important; }
+.room-beach .tc-footer span { color: #2a8ca0 !important; }
+
+/* ── Trip detail view — sandy paper & ocean accents ─── */
+.room-beach .detail-page .btn-primary { background: #1b9aaa !important; border-color: #1b9aaa !important; color: #fff !important; }
+.room-beach .detail-page > .dp-header .btn { background: rgba(255,253,247,0.9) !important; border-color: rgba(42,140,160,0.3) !important; color: #2a7a86 !important; }
+.room-beach .trip-countdown-big .tcb-num { color: #ef6f5e !important; }
+.room-beach .trip-countdown-big .tcb-label { color: #2a8ca0 !important; }
+.room-beach .trip-budget-card,
+.room-beach .section-accordion,
+.room-beach .itin-content,
+.room-beach .flight-row,
+.room-beach .accom-card {
+  background: linear-gradient(180deg, #fffdf6, #fbf3e2) !important;
+  border: 1px solid #e6d3ad !important;
+  backdrop-filter: none !important;
+}
+.room-beach .sa-title { color: #15596b !important; }
+.room-beach .sa-title em { color: #ef6f5e !important; }
+.room-beach .sa-chevron { color: #2a8ca0 !important; }
+.room-beach .detail-page h2 { color: #15596b !important; }
+.room-beach .detail-page h2 em { color: #ef6f5e !important; }
+.room-beach .detail-page .pill { background: #eef8f8 !important; border-color: rgba(42,140,160,0.2) !important; color: #2a7a86 !important; }
+.room-beach .budget-breakdown .bb-row { color: #5a7a80 !important; }
+.room-beach .budget-breakdown .bb-total { color: #15596b !important; }
+.room-beach .fr-code { color: #15596b !important; }
+.room-beach .itin-title, .room-beach .itin-content h4 { color: #15596b !important; }
+.room-beach .itin-notes { color: #5a7a80 !important; }
+.room-beach .trip-act-row, .room-beach .pack-item, .room-beach .linked-item {
+  background: #fbf3e2 !important; border-color: #e6d3ad !important;
+}
+.room-beach .pack-item.packed { background: #d6f0e0 !important; }
+.room-beach .detail-page .btn { background: rgba(255,253,247,0.85) !important; border-color: rgba(42,140,160,0.25) !important; color: #2a7a86 !important; }
+.room-beach .he-add-btn { background: rgba(255,253,247,0.85) !important; }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Room-specific card/UI overrides
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Bedroom — warmer cards (overridden above in full section) */
+
+/* Restaurant — bright cosy (full treatment above) */
+
+/* Garden — fresh cards */
+.room-garden .card {
+  border-color: rgba(100,160,80,0.15);
+}
+
+/* Living room — bright cosy (full treatment above) */
+
+/* Beach — bright fresh cards */
+.room-beach .card {
+  background: rgba(255,255,255,0.85);
+  border-color: rgba(100,200,240,0.2);
+  backdrop-filter: blur(8px);
+}
+.theme-dark .room-beach .card {
+  background: rgba(26,24,20,0.85);
+  border-color: rgba(100,180,220,0.1);
+}
+
+/* ── Sound toggle button ─────────────────────────────────────────────────── */
+.sound-toggle {
+  appearance: none; border: none;
+  background: rgba(255,255,255,0.08);
+  color: var(--ink-soft);
+  font-size: 16px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: grid; place-items: center;
+  transition: background 0.15s, color 0.15s;
+  backdrop-filter: blur(6px);
+  border: 0.5px solid var(--line);
+}
+.sound-toggle:hover { background: rgba(255,255,255,0.15); color: var(--ink); }
+.sound-toggle.muted { opacity: 0.5; }
+
+/* ── Room label (subtle indicator) ───────────────────────────────────────── */
+.room-label {
+  position: fixed;
+  bottom: 16px; left: 16px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ink-faint);
+  opacity: 0.4;
+  z-index: 2;
+  pointer-events: none;
+  transition: opacity 0.5s;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   UNIFIED HEADER CHROME — consistent across ALL rooms
+   Only the active-tab accent changes per room; everything else is shared.
+   These rules come LAST so they override per-room header overrides.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── App header bar = wooden shelf ─── */
+[class*="room-"] .app-header {
+  background: linear-gradient(180deg, #d4c0a4, #c4ad90) !important;
+  border-color: #b8a080 !important;
+  border-bottom: 3px solid #a89070 !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+}
+
+/* ── Brand / names ─── */
+[class*="room-"] .names {
+  color: #4a3828 !important;
+  text-shadow: 0 1px 0 rgba(255,240,210,0.5);
+}
+[class*="room-"] .names em { color: #8a5a3a !important; }
+[class*="room-"] .brand .amp { color: #a08060 !important; }
+[class*="room-"] .brand .sub { color: #8a7a68 !important; border-left-color: rgba(120,100,80,0.3) !important; }
+
+/* ── Weather stat ─── */
+[class*="room-"] .weather-stat { color: #6a5a48 !important; }
+[class*="room-"] .stat {
+  background: #fdf8ed !important;
+  border: 1px solid #d8c8a8 !important;
+  box-shadow: 2px 3px 6px rgba(0,0,0,0.08) !important;
+}
+[class*="room-"] .stat .glyph { background: #f0e4c8 !important; }
+[class*="room-"] .stat .stat-label { color: #a09080 !important; }
+[class*="room-"] .stat .stat-val { color: #4a3828 !important; }
+[class*="room-"] .stat .stat-val em { color: #8a5a3a !important; }
+
+/* ── Coming Up strip = lined notepad ─── */
+[class*="room-"] .coming-up {
+  background: #fdf8ed !important;
+  border: 1px solid #d8c8a8 !important;
+  border-radius: 2px !important;
+  box-shadow: 2px 3px 6px rgba(0,0,0,0.06) !important;
+  background-image: repeating-linear-gradient(
+    0deg, transparent, transparent 23px, rgba(100,140,200,0.12) 23px, rgba(100,140,200,0.12) 24px
+  ) !important;
+}
+[class*="room-"] .cu-label { color: #8a7a68 !important; }
+[class*="room-"] .cu-chip {
+  background: rgba(255,240,210,0.5) !important;
+  border-color: #d8c8a8 !important;
+  border-radius: 2px !important;
+  color: #5a4a38 !important;
+}
+[class*="room-"] .cu-title { color: #4a3828 !important; }
+[class*="room-"] .cu-when { color: #a09080 !important; }
+
+/* ── Tab nav = notebook tabs ─── */
+[class*="room-"] .tab-nav {
+  border-color: #c4ad90 !important;
+  background: #efe6d4 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 2px 6px rgba(0,0,0,0.08) !important;
+  gap: 3px !important;
+}
+[class*="room-"] .tab-btn {
+  color: #8a7a68 !important;
+  border: 1px solid transparent !important;
+  border-radius: 6px 6px 0 0 !important;
+  background: rgba(255,248,235,0.3) !important;
+  font-size: 12.5px !important;
+  padding: 5px 14px !important;
+}
+[class*="room-"] .tab-btn:hover:not(.active) {
+  color: #6a5a48 !important;
+  background: rgba(255,248,235,0.5) !important;
+}
+[class*="room-"] .tab-dot { opacity: 0.7; }
+
+/* Active tab — per-room accent color (the ONLY thing that changes) */
+.room-bedroom .tab-btn.active { color: #4a3828 !important; background: #f5efe4 !important; border-color: #c4ad90 #c4ad90 transparent !important; font-weight: 600 !important; }
+.room-kitchen .tab-btn.active { color: #fff5ec !important; background: #b5462e !important; border-color: #b5462e !important; font-weight: 600 !important; }
+.room-restaurant .tab-btn.active { color: #f7e6c8 !important; background: #8c3a2e !important; border-color: #8c3a2e !important; font-weight: 600 !important; }
+.room-garden .tab-btn.active { color: #fff !important; background: #3f7d3a !important; border-color: #3f7d3a !important; font-weight: 600 !important; }
+.room-livingroom .tab-btn.active { color: #fff5ec !important; background: #b5622e !important; border-color: #b5622e !important; font-weight: 600 !important; }
+.room-beach .tab-btn.active { color: #fff !important; background: #1b9aaa !important; border-color: #1b9aaa !important; font-weight: 600 !important; }
+
+/* ── Signature / footer ─── */
+[class*="room-"] .signature { color: #a09080 !important; }
+[class*="room-"] .signature em { color: #8a5a3a !important; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   UNIFIED INTERACTIVE ELEMENTS — modals, buttons, fields themed per room
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Shared modal base: warm paper treatment ─── */
+[class*="room-"] .modal-overlay { background: rgba(80,60,40,0.32) !important; }
+[class*="room-"] .modal {
+  background: linear-gradient(180deg, #fdf8ed, #f8f0de) !important;
+  border: 1px solid #d8c8a8 !important;
+  box-shadow: 0 30px 80px rgba(60,40,20,0.35), 0 0 0 0.5px #d8c8a8 !important;
+  color: #4a3828 !important;
+}
+[class*="room-"] .modal h3 { color: #3a2818 !important; }
+[class*="room-"] .modal .modal-sub { color: #8a7a68 !important; }
+[class*="room-"] .modal-close {
+  background: #f0e6d0 !important;
+  border-color: #d8c8a8 !important;
+  color: #8a7a68 !important;
+}
+[class*="room-"] .modal .detail-meta .pill {
+  background: #f0e6d0 !important;
+  border-color: #d8c8a8 !important;
+  color: #6a5a48 !important;
+}
+[class*="room-"] .modal .field label { color: #8a7a68 !important; }
+[class*="room-"] .modal .field input,
+[class*="room-"] .modal .field select {
+  background: #fdf8ed !important;
+  border-color: #d8c8a8 !important;
+  color: #4a3828 !important;
+}
+[class*="room-"] .modal .field input:focus,
+[class*="room-"] .modal .field select:focus {
+  border-color: #b08a55 !important;
+  background: #fff !important;
+}
+[class*="room-"] .modal .btn {
+  background: #f0e6d0 !important;
+  border-color: #d8c8a8 !important;
+  color: #6a5a48 !important;
+}
+[class*="room-"] .modal .btn:hover { background: #e8dcc4 !important; }
+[class*="room-"] .modal .rating-label.eoin { color: #b14a4a !important; }
+[class*="room-"] .modal .rating-label.cris { color: #9a6a3a !important; }
+[class*="room-"] .modal .recipe-body h4 { color: #6a5232 !important; }
+[class*="room-"] .modal .recipe-body { color: #5a4a38 !important; }
+
+/* ── Per-room modal accent (title em + primary button) ─── */
+.room-bedroom .modal h3 em { color: #8a5a3a !important; }
+.room-bedroom .modal .btn-primary { background: #8a6a44 !important; border-color: #8a6a44 !important; color: #fff5ec !important; }
+.room-bedroom .modal .btn-primary:hover { background: #7a5a34 !important; border-color: #7a5a34 !important; }
+
+.room-kitchen .modal h3 em { color: #b5462e !important; }
+.room-kitchen .modal .btn-primary { background: #b5462e !important; border-color: #b5462e !important; color: #fff5ec !important; }
+.room-kitchen .modal .btn-primary:hover { background: #9b3a25 !important; border-color: #9b3a25 !important; }
+
+.room-restaurant .modal h3 em { color: #8c3a2e !important; }
+.room-restaurant .modal .btn-primary { background: #8c3a2e !important; border-color: #8c3a2e !important; color: #f7e6c8 !important; }
+.room-restaurant .modal .btn-primary:hover { background: #7a2e22 !important; border-color: #7a2e22 !important; }
+
+.room-garden .modal h3 em { color: #3f7d3a !important; }
+.room-garden .modal .btn-primary { background: #3f7d3a !important; border-color: #3f7d3a !important; color: #fff !important; }
+.room-garden .modal .btn-primary:hover { background: #356e30 !important; border-color: #356e30 !important; }
+
+.room-livingroom .modal h3 em { color: #b5622e !important; }
+.room-livingroom .modal .btn-primary { background: #b5622e !important; border-color: #b5622e !important; color: #fff5ec !important; }
+.room-livingroom .modal .btn-primary:hover { background: #9a5224 !important; border-color: #9a5224 !important; }
+
+.room-beach .modal h3 em { color: #1b9aaa !important; }
+.room-beach .modal .btn-primary { background: #1b9aaa !important; border-color: #1b9aaa !important; color: #fff !important; }
+.room-beach .modal .btn-primary:hover { background: #168a98 !important; border-color: #168a98 !important; }
+
+/* ── Per-room detail page accent (primary btn, title em, view-toggle active) ─── */
+/* These override the base .btn-primary on detail pages (not just in modals) */
+.room-bedroom .detail-page .btn-primary,
+.room-bedroom .dp-header .btn-primary { background: #8a6a44 !important; border-color: #8a6a44 !important; color: #fff5ec !important; }
+.room-bedroom .detail-page .btn-primary:hover { background: #7a5a34 !important; border-color: #7a5a34 !important; }
+.room-bedroom .dp-title em { color: #8a5a3a !important; }
+
+/* Kitchen — already fully themed above */
+/* Restaurant — already fully themed above */
+/* Garden — already fully themed above */
+
+.room-livingroom .detail-page .btn-primary,
+.room-livingroom .dp-header .btn-primary { background: #b5622e !important; border-color: #b5622e !important; color: #fff5ec !important; }
+.room-livingroom .detail-page .btn-primary:hover { background: #9a5224 !important; border-color: #9a5224 !important; }
+.room-livingroom .dp-title { color: #4a3020 !important; }
+.room-livingroom .dp-title em { color: #b5622e !important; }
+
+/* ── Per-room detail page view-toggle, pills, city filter — unified warm ─── */
+[class*="room-"] .dp-filters .view-toggle {
+  background: #f0e6d0 !important;
+  border-color: #d8c8a8 !important;
+}
+[class*="room-"] .dp-filters .view-toggle button {
+  color: #8a7a68 !important;
+}
+[class*="room-"] .dp-filters .pill {
+  background: #f0e6d0 !important;
+  border-color: #d8c8a8 !important;
+  color: #8a7a68 !important;
+}
+[class*="room-"] .city-filter-label { color: #8a7a68 !important; }
+[class*="room-"] .city-select {
+  background-color: #fdf8ed !important;
+  border-color: #d8c8a8 !important;
+  color: #4a3828 !important;
+}
+[class*="room-"] .city-trip-banner {
+  background: #fdf8ed !important;
+  border: 1px solid #d8c8a8 !important;
+  color: #4a3828 !important;
+}
+
+/* Per-room view-toggle active accent */
+.room-bedroom .dp-filters .view-toggle button.active { background: #8a6a44 !important; color: #fff5ec !important; }
+.room-kitchen .dp-filters .view-toggle button.active { background: #b5462e !important; color: #fff5ec !important; }
+.room-restaurant .dp-filters .view-toggle button.active { background: #8c3a2e !important; color: #f7e6c8 !important; }
+.room-garden .dp-filters .view-toggle button.active { background: #3f7d3a !important; color: #fff !important; }
+.room-livingroom .dp-filters .view-toggle button.active { background: #b5622e !important; color: #fff5ec !important; }
+.room-beach .dp-filters .view-toggle button.active { background: #1b9aaa !important; color: #fff !important; }
+
+/* ── Per-room page-level .btn and .btn-primary on cards ─── */
+/* Unified card button base */
+[class*="room-"] .detail-page .btn {
+  background: #f0e6d0 !important;
+  border-color: #d8c8a8 !important;
+  color: #6a5a48 !important;
+}
+[class*="room-"] .detail-page .btn:hover { background: #e8dcc4 !important; }
+/* Per-room card primary buttons */
+.room-kitchen .detail-page .btn-primary { background: #b5462e !important; border-color: #b5462e !important; color: #fff5ec !important; }
+.room-restaurant .detail-page .btn-primary { background: #8c3a2e !important; border-color: #8c3a2e !important; color: #f7e6c8 !important; }
+.room-garden .detail-page .btn-primary { background: #3f7d3a !important; border-color: #3f7d3a !important; color: #fff !important; }
+.room-livingroom .detail-page .btn-primary { background: #b5622e !important; border-color: #b5622e !important; color: #fff5ec !important; }
+.room-beach .detail-page .btn-primary { background: #1b9aaa !important; border-color: #1b9aaa !important; color: #fff !important; }
+
+/* ── Rating labels unified across all detail pages ─── */
+[class*="room-"] .detail-page .rating-label.eoin { color: #b14a4a !important; }
+[class*="room-"] .detail-page .rating-label.cris { color: #9a6a3a !important; }
+
+/* ── Eyebrow labels ─── */
+[class*="room-"] .dp-header .eyebrow { color: #9a7a52 !important; letter-spacing: 0.3em !important; }
+
+/* ── Detail page title (shared dark brown, accent per room) ─── */
+[class*="room-"] .dp-title { color: #3a2818 !important; }
+
+/* ── Item editor modal: textarea, color swatches, field rows ─── */
+[class*="room-"] .modal-editor { width: min(560px, 92vw) !important; }
+[class*="room-"] .modal .field-row {
+  display: flex; gap: 10px;
+}
+[class*="room-"] .modal .field-row .field { flex: 1; }
+[class*="room-"] .modal .field textarea {
+  padding: 10px 12px;
+  border: 0.5px solid #d8c8a8 !important;
+  border-radius: 10px;
+  background: #fdf8ed !important;
+  font: inherit;
+  font-size: 14px;
+  color: #4a3828 !important;
+  outline: none;
+  resize: vertical;
+  font-family: var(--font-body);
+}
+[class*="room-"] .modal .field textarea:focus {
+  border-color: #b08a55 !important;
+  background: #fff !important;
+}
+[class*="room-"] .modal .color-swatches {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+[class*="room-"] .modal .color-swatch {
+  appearance: none;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  transition: transform 0.12s;
+}
+[class*="room-"] .modal .color-swatch:hover { transform: scale(1.1); }
+[class*="room-"] .modal .color-swatch.active {
+  border-color: #4a3828;
+  box-shadow: 0 0 0 2px #fdf8ed, 0 0 0 4px #4a3828;
+}
+[class*="room-"] .modal .btn-danger {
+  background: #b14a3a !important;
+  border-color: #b14a3a !important;
+  color: #fff !important;
+}
+[class*="room-"] .modal .btn-danger:hover {
+  background: #9a3a2a !important;
+  border-color: #9a3a2a !important;
+}
+[class*="room-"] .modal .btn[disabled] {
+  opacity: 0.5; cursor: not-allowed;
+}
+
+/* ── Action button cluster on cards (heart, edit, delete) ─── */
+.pc-banner-actions {
+  position: absolute;
+  top: 10px; right: 10px;
+  display: flex;
+  gap: 4px;
+  z-index: 2;
+}
+.wc-poster-actions {
+  position: absolute;
+  top: 10px; left: 10px;
+  display: flex;
+  gap: 4px;
+  z-index: 2;
+}
+.mini-btn-del {
+  color: #b14a4a !important;
+}
+.mini-btn-del:hover {
+  background: rgba(177,74,74,0.15) !important;
+  border-color: #b14a4a !important;
+}
+
+/* ── Recipe body inside modal: ensure ingredient & step text is legible ─── */
+[class*="room-"] .modal .recipe-body { color: #4a3826 !important; }
+[class*="room-"] .modal .recipe-body h4 {
+  color: #6a4a2a !important;
+  border-bottom-color: rgba(120,86,48,0.3) !important;
+}
+[class*="room-"] .modal .recipe-body ul,
+[class*="room-"] .modal .recipe-body ol,
+[class*="room-"] .modal .recipe-body li,
+[class*="room-"] .modal .recipe-body p {
+  color: #4a3826 !important;
+}
+[class*="room-"] .modal .recipe-body li::marker {
+  color: #b06a4a !important;
+}
+[class*="room-"] .modal a { color: #b06a4a !important; }
+
+/* ── Bedroom calendar — week view & toggle styled like the rest of the room ─── */
+.room-bedroom .cal-toolbar .month-label { color: #4a3828 !important; }
+.room-bedroom .cal-toolbar .month-label em { color: #8a5a3a !important; }
+.room-bedroom .cal-card .view-toggle,
+.room-bedroom .calendar-card .view-toggle,
+.room-bedroom .widgets-col .calendar-card .view-toggle,
+.room-bedroom .cal-toolbar .view-toggle,
+.room-bedroom main > .card .view-toggle {
+  background: #efe6d4 !important;
+  border-color: #c4ad90 !important;
+}
+.room-bedroom .calendar-card .view-toggle button,
+.room-bedroom .cal-toolbar .view-toggle button,
+.room-bedroom main > .card .view-toggle button,
+.room-bedroom .cal-card .view-toggle button { color: #8a7a68 !important; border-color: #c4ad90 !important; }
+.room-bedroom .calendar-card .view-toggle button.active,
+.room-bedroom .cal-toolbar .view-toggle button.active,
+.room-bedroom main > .card .view-toggle button.active,
+.room-bedroom .cal-card .view-toggle button.active {
+  background: #fdf8ed !important;
+  color: #4a3828 !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08) !important;
+}
+.room-bedroom .icon-btn {
+  background: #fdf8ed !important;
+  border-color: #d8c8a8 !important;
+  color: #6a5a48 !important;
+}
+.room-bedroom .icon-btn:hover { background: #efe6d4 !important; }
+
+/* Week view grid */
+.room-bedroom .week-grid {
+  background: #fdf8ed !important;
+  border: 1px solid #d8c8a8 !important;
+  border-radius: 4px;
+}
+.room-bedroom .week-dow {
+  background: #efe6d4 !important;
+  border-bottom: 1px solid #d8c8a8 !important;
+  border-right: 1px solid #d8c8a8 !important;
+}
+.room-bedroom .week-dow.gutter { background: #e8dcc4 !important; }
+.room-bedroom .week-dow .dow-name { color: #8a7a68 !important; }
+.room-bedroom .week-dow .dow-num { color: #4a3828 !important; }
+.room-bedroom .week-dow.today .dow-num { color: #b06a4a !important; }
+.room-bedroom .week-hour-label {
+  background: #efe6d4 !important;
+  color: #8a7a68 !important;
+  border-right: 1px solid #d8c8a8 !important;
+  border-bottom: 1px solid rgba(120,100,80,0.18) !important;
+}
+.room-bedroom .week-cell {
+  background: #fdf8ed !important;
+  border-right: 1px solid rgba(120,100,80,0.18) !important;
+  border-bottom: 1px solid rgba(120,100,80,0.12) !important;
+}
+.room-bedroom .week-cell.dragover { background: rgba(176,106,74,0.12) !important; }
+.room-bedroom .week-event { color: #4a3828 !important; }
+.room-bedroom .week-event .we-time { color: #8a7a68 !important; }
+
+/* Day detail panel */
+.room-bedroom .day-detail { border-top-color: rgba(120,100,80,0.25) !important; }
+.room-bedroom .dd-date { color: #8a5a3a !important; }
+.room-bedroom .dd-item {
+  background: #fdf8ed !important;
+  border: 1px solid #d8c8a8 !important;
+}
+.room-bedroom .dd-item:hover { background: #f5efe4 !important; }
+.room-bedroom .dd-title { color: #4a3828 !important; }
+.room-bedroom .dd-sub { color: #8a7a68 !important; }
+.room-bedroom .dd-time { color: #6a5a48 !important; }
+.room-bedroom .dd-empty { color: #a09080 !important; }
+
