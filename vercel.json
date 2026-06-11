@@ -3,6 +3,9 @@
   "functions": {
     "api/*.js": { "maxDuration": 10 }
   },
+  "rewrites": [
+    { "source": "/", "destination": "/Together.html" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
