@@ -1120,14 +1120,7 @@
   border-bottom: 2px dashed #cdb888 !important;
   margin: 0 0 0 0;
 }
-.room-garden .pc-banner::after {
-  content: 'SEEDS';
-  position: absolute; bottom: 6px; left: 0; right: 0;
-  text-align: center;
-  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.4em;
-  color: rgba(47,93,43,0.5);
-  opacity: 1; background: none; width: auto; height: auto;
-}
+.room-garden .pc-banner::after { content: none; }
 .room-garden .pc-icon {
   border-radius: 50% !important;
   border: 2px solid #fffef8 !important;
