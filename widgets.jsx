@@ -183,7 +183,6 @@ function TurnTracker({ collapsed, onToggleCollapse }) {
   const [turns, setTurns] = React.useState({
     chef:   'Eoin',
     picker: 'Cristina',
-    driver: 'Eoin',
   });
   const flip = (role) => setTurns((t) => ({ ...t, [role]: t[role] === 'Eoin' ? 'Cristina' : 'Eoin' }));
   return (
@@ -206,9 +205,6 @@ function TurnTracker({ collapsed, onToggleCollapse }) {
           </div>
           <div className={`turn-row ${turns.picker === 'Eoin' ? 'eoin' : 'cris'}`} onClick={() => flip('picker')} style={{ cursor: 'pointer' }}>
             <span className="role">Picks the movie</span><span className="who">{turns.picker}</span>
-          </div>
-          <div className={`turn-row ${turns.driver === 'Eoin' ? 'eoin' : 'cris'}`} onClick={() => flip('driver')} style={{ cursor: 'pointer' }}>
-            <span className="role">Drives</span><span className="who">{turns.driver}</span>
           </div>
         </div>
       </div>}
